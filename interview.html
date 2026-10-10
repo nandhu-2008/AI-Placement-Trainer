@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realistic AI Interview - AI Placement Trainer</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .interview-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .interview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .interviewer-avatar-card {
+      background: radial-gradient(circle at top, #1e293b, #0f172a);
+      border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      position: relative;
+    }
+
+    .avatar-circle {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 15px auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      box-shadow: 0 0 25px rgba(37, 99, 235, 0.5);
+      transition: 0.3s;
+    }
+
+    .avatar-circle.speaking {
+      animation: pulseGlow 1.2s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      from { transform: scale(1); box-shadow: 0 0 20px rgba(37, 99, 235, 0.4); }
+      to { transform: scale(1.08); box-shadow: 0 0 40px rgba(124, 58, 237, 0.8); }
+    }
+
+    .conversation-history {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 15px;
+      max-height: 250px;
+      overflow-y: auto;
+      margin-top: 15px;
+    }
+
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .chat-interviewer {
+      background: #1e293b;
+      color: #38bdf8;
+      border-left: 4px solid #2563eb;
+    }
+
+    .chat-candidate {
+      background: #064e3b;
+      color: #6ee7b7;
+      border-left: 4px solid #10b981;
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body onload="initInterviewPage()">
+
+  <header>
+    <h1>AI Voice & Video Interview Trainer</h1>
+    <p>Realistic Department & Role Placement Mock Interview with Dynamic Follow-Up Questions</p>
+  </header>
+
+  <main class="quiz-container">
+
+    <!-- Pre-Interview Onboarding Setup -->
+    <div class="card" id="interviewSetupCard">
+      <h2>Candidate Pre-Interview Onboarding</h2>
+      <p>Configure your mock interview setup before entering the interview room.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 15px;">
+        <div>
+          <label><b>Candidate Name:</b></label>
+          <input type="text" id="candidateNameInput" placeholder="Enter your full name" value="Engineering Candidate">
+        </div>
+
+        <div>
+          <label><b>Department:</b></label>
+          <select id="interviewDepartment" onchange="changeInterviewDepartment()">
+            <option value="">-- Select Department --</option>
+            <option value="cse">CSE</option>
+            <option value="it">IT</option>
+            <option value="ece">ECE</option>
+            <option value="eee">EEE</option>
+            <option value="mech">Mechanical</option>
+            <option value="civil">Civil</option>
+            <option value="aids">AIDS</option>
+            <option value="aiml">AIML</option>
+            <option value="csbs">CSBS</option>
+            <option value="bme">Biomedical</option>
+          </select>
+        </div>
+
+        <div>
+          <label><b>Target Role:</b></label>
+          <select id="interviewTargetRole">
+            <option value="Software Engineer">Software Engineer (SDE)</option>
+            <option value="Full Stack Developer">Full Stack Developer</option>
+            <option value="Data Analyst / Scientist">Data Analyst / Scientist</option>
+            <option value="Core Engineering Trainee">Core Engineering Trainee</option>
+            <option value="System Engineer">System Engineer</option>
+          </select>
+        </div>
+
+        <div>
+          <label><b>Interview Type:</b></label>
+          <select id="interviewTypeSelect">
+            <option value="Comprehensive">Comprehensive (HR + Tech + Project)</option>
+            <option value="Technical + DSA">Technical + DSA Deep Dive</option>
+            <option value="HR & Situational">HR & Behavioral Focus</option>
+          </select>
+        </div>
+
+        <div>
+          <label><b>Difficulty:</b></label>
+          <select id="interviewDifficultySelect">
+            <option value="Medium">Medium (Standard Campus Placement)</option>
+            <option value="Easy">Easy (Entry Level)</option>
+            <option value="Hard">Hard (Tier-1 Product Company)</option>
+          </select>
+        </div>
+
+        <div>
+          <label><b>Number of Questions:</b></label>
+          <select id="interviewQuestionCountSelect">
+            <option value="5">5 Questions</option>
+            <option value="8">8 Questions</option>
+            <option value="10">10 Questions</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="button-row" style="margin-top: 20px;">
+        <button onclick="startRealisticInterview()">Enter Interview Room</button>
+        <a href="index.html"><button type="button" class="secondary-btn">Back to Home</button></a>
+      </div>
+    </div>
+
+    <!-- Active Interview Room -->
+    <div id="interviewRoomArea" style="display:none;">
+
+      <div class="interview-grid">
+
+        <!-- Left: AI Interviewer Workspace -->
+        <div class="interviewer-avatar-card">
+          <div id="aiAvatarCircle" class="avatar-circle">🤖</div>
+          <h2 style="margin:0; color:#38bdf8;" id="interviewerNameTag">AI Technical Interviewer</h2>
+          <p style="font-size:0.85rem; color:#cbd5e1; margin-top:4px;" id="interviewRoleSubtitle">Role: SDE Interviewer</p>
+
+          <div style="background:rgba(255,255,255,0.06); padding:12px; border-radius:12px; margin-top:15px; text-align:left;">
+            <span style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase;">Current Question</span>
+            <p id="interviewQuestion" style="font-weight:600; font-size:1.1rem; color:white; margin-top:4px;">Welcome! Click Start to begin.</p>
+          </div>
+
+          <div class="button-row" style="justify-content:center; margin-top:15px;">
+            <button onclick="speakCurrentQuestion()" style="background:#2563eb;">🔊 Repeat Question</button>
+            <button onclick="startVoiceAnswer()" style="background:#16a34a;">🎙️ Start Answer</button>
+            <button onclick="stopVoiceAnswer()" style="background:#dc2626;">🛑 Stop Answer</button>
+            <button onclick="nextInterviewQuestion()" style="background:#7c3aed;">➡️ Next Question</button>
+          </div>
+
+          <textarea id="interviewAnswer" rows="4" placeholder="Your spoken answer will be transcribed here live..." style="margin-top:15px;"></textarea>
+
+          <div class="conversation-history">
+            <h4 style="margin-bottom:8px; color:#cbd5e1;">Live Conversation Log</h4>
+            <div id="interviewConversationLog"></div>
+          </div>
+        </div>
+
+        <!-- Right: Camera Preview & Live Monitoring -->
+        <div>
+          <div class="card">
+            <h2>Camera Preview & Monitoring</h2>
+            <video id="cameraPreview" autoplay playsinline muted></video>
+
+            <div class="button-row" style="margin-top:12px;">
+              <button onclick="startCamera()">Start Camera</button>
+              <button onclick="stopCamera()" style="background:#64748b;">Stop Camera</button>
+            </div>
+
+            <div style="margin-top:15px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div id="cameraStatus">Camera: Off</div>
+              <div id="faceStatus">Face: Idle</div>
+              <div id="eyeContactStatus">Eye Contact: -</div>
+              <div id="presenceStatus">Presence: -</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:15px;">
+            <h2>Real-time Feedback</h2>
+            <p id="interviewStatus">Interview ready.</p>
+            <p id="answerAnalysis">Answer analysis ready.</p>
+            <p id="confidenceAnalysis">Confidence analysis ready.</p>
+            <p id="bodyLanguageAnalysis">Body language feedback ready.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="quiz-actions" style="margin-top:20px;">
+        <button onclick="finishInterview()" style="background:#16a34a; width:100%;">End & Generate Final 100-Pt Report</button>
+      </div>
+
+    </div>
+
+    <!-- Final AI Interview Report Card (100-Point Scale) -->
+    <div class="card" id="interviewReport" style="display:none;">
+      <h2>🎯 Comprehensive Placement Interview Report</h2>
+      
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:15px; margin: 15px 0; background:rgba(255,255,255,0.05); padding:15px; border-radius:14px;">
+        <div>
+          <p style="margin:0; color:#cbd5e1;">Overall Score</p>
+          <h3 id="reportOverall" style="color:#60a5fa; font-size:2.2rem; margin:0;">0/100</h3>
+        </div>
+        <div>
+          <p style="margin:0; color:#cbd5e1;">Hiring Recommendation</p>
+          <h3 id="reportRecommendationText" style="color:#4ade80; font-size:1.3rem; margin-top:5px;">Consider</h3>
+        </div>
+        <div>
+          <p style="margin:0; color:#cbd5e1;">Placement Chance</p>
+          <h3 id="reportChance" style="color:#facc15; font-size:1.8rem; margin:0;">0%</h3>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin-bottom:20px;">
+        <p><strong>Answer Quality:</strong> <span id="reportAnswer">-</span></p>
+        <p><strong>Technical Depth:</strong> <span id="reportTechnicalDepth">-</span></p>
+        <p><strong>Confidence:</strong> <span id="reportConfidence">-</span></p>
+        <p><strong>Eye Contact:</strong> <span id="reportEye">-</span></p>
+        <p><strong>Body Language:</strong> <span id="reportBody">-</span></p>
+      </div>
+
+      <hr style="border-color:rgba(255,255,255,0.1);">
+
+      <h3>✅ Key Strengths</h3>
+      <p id="reportStrength" style="color:#4ade80;">-</p>
+
+      <h3 style="margin-top:15px;">📈 Areas to Improve</h3>
+      <p id="reportImprove" style="color:#f87171;">-</p>
+
+      <h3 style="margin-top:15px;">💡 AI Coach Feedback (STAR Method)</h3>
+      <p id="reportStarFeedback" style="background:rgba(255,255,255,0.08); padding:15px; border-radius:10px; line-height:1.7;">-</p>
+
+      <div class="quiz-actions" style="margin-top:20px;">
+        <button onclick="location.reload()">Start New Mock Interview</button>
+        <a href="result.html"><button type="button">Go to Placement Dashboard</button></a>
+      </div>
+    </div>
+
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Placement Trainer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body onload="hideLoader()">
+  <div id="loader">
+    <div class="loader-box">
+        <h1>🤖 AI Placement Trainer</h1>
+        <p>Loading...</p>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+</div>
+
+  <header class="hero-header">
+    <div class="hero-content">
+        <h1>🚀 AI Placement Trainer</h1>
+
+        <p class="hero-subtitle">
+            Prepare for Campus Placements with Aptitude,
+            Technical, Group Discussion and AI Interview Practice.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#dashboard">
+                <button>Start Your Journey</button>
+            </a>
+
+            <a href="result.html">
+                <button class="secondary-btn">View Result</button>
+            </a>
+        </div>
+    </div>
+</header>
+<section class="stats-section">
+
+    <div class="stat-card">
+        <h2>500+</h2>
+        <p>Aptitude & Tech Questions</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>50+</h2>
+        <p>DSA Coding Problems</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>50+</h2>
+        <p>GD Topics</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>AI Voice</h2>
+        <p>Realistic Interviewer</p>
+    </div>
+
+</section>
+
+  <main class="quiz-container">
+
+    <!-- Department Selection -->
+    <div class="card">
+      <h2>Select Your Department</h2>
+      <p>Choose your engineering department once. The technical and interview rounds will use this selection.</p>
+
+      <select id="mainDepartment">
+        <option value="">-- Select Department --</option>
+        <option value="cse">CSE</option>
+        <option value="it">IT</option>
+        <option value="ece">ECE</option>
+        <option value="eee">EEE</option>
+        <option value="mech">Mechanical</option>
+        <option value="civil">Civil</option>
+        <option value="aids">AIDS</option>
+        <option value="aiml">AIML</option>
+        <option value="csbs">CSBS</option>
+        <option value="bme">Biomedical</option>
+      </select>
+
+      <div class="button-row">
+        <button onclick="saveMainDepartment()">Save Department</button>
+      </div>
+
+      <p id="departmentSavedMsg" class="info-text">
+        Choose and save your department before starting rounds.
+      </p>
+    </div>
+
+    <!-- Round Cards -->
+    <div class="home-grid">
+
+      <div class="home-card">
+        <h2>⚡ Aptitude Round</h2>
+        <p>Practice 200+ numerical, logical, and verbal aptitude questions with custom limits.</p>
+        <a href="aptitude.html"><button>Open Aptitude</button></a>
+      </div>
+
+      <div class="home-card">
+        <h2>💻 Technical Round</h2>
+        <p>200+ Department-based MCQ technical questions for all engineering streams.</p>
+        <a href="technical.html"><button>Open Technical</button></a>
+      </div>
+
+      <div class="home-card">
+        <h2>🧩 DSA Challenge</h2>
+        <p>Solve 50+ DSA coding problems with multi-language editor & instant execution.</p>
+        <a href="dsa.html"><button>Open DSA Challenge</button></a>
+      </div>
+
+      <div class="home-card">
+        <h2>🗣️ Group Discussion</h2>
+        <p>Practice 50+ categorized GD topics solo or live with friends via Firebase.</p>
+        <a href="gd.html"><button>Open GD</button></a>
+      </div>
+
+      <div class="home-card">
+        <h2>🤖 AI Interview</h2>
+        <p>Voice-based AI interview with role selection, camera, follow-up questions & 100-pt report.</p>
+        <a href="interview.html"><button>Open Interview</button></a>
+      </div>
+
+      <div class="home-card">
+        <h2>📊 Placement Dashboard</h2>
+        <p>View complete performance analytics, history timeline, and readiness score.</p>
+        <a href="result.html"><button>Open Result</button></a>
+      </div>
+
+    </div>
+
+    <!-- Quick Instructions -->
+    <div class="card">
+      <h2>How to Use This Platform</h2>
+      <p>1. Select and save your department.</p>
+      <p>2. Attempt Aptitude & Technical tests with custom question limits.</p>
+      <p>3. Practice DSA algorithms with code execution.</p>
+      <p>4. Engage in solo or multi-user Group Discussions.</p>
+      <p>5. Complete a realistic voice-based AI placement interview.</p>
+      <p>6. Review your detailed Placement Readiness report.</p>
+    </div>
+
+  </main>
+  <footer>
+    <h3>AI Placement Trainer</h3>
+    <p>Built for Engineering Students • Practice • Improve • Get Placed</p>
+    <p>© 2026 AI Placement Trainer</p>
+  </footer>
+  <script src="script.js"></script>
+
+</body>
+</html>

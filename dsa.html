@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSA Challenge - AI Placement Trainer</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* DSA Split Pane Layout */
+    .dsa-workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 900px) {
+      .dsa-workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dsa-problem-pane {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      max-height: 700px;
+      overflow-y: auto;
+    }
+
+    .dsa-editor-pane {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .code-editor-textarea {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      background: #090d16;
+      color: #38bdf8;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px;
+      min-height: 320px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .test-case-box {
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #e2e8f0;
+      margin-top: 10px;
+    }
+
+    .tag-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    .tag-easy { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+    .tag-medium { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid #eab308; }
+    .tag-hard { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+
+    .problem-nav-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .nav-pill-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+    }
+
+    .nav-pill-btn.active {
+      background: #2563eb;
+      border-color: #60a5fa;
+    }
+
+    .nav-pill-btn.solved {
+      border-color: #22c55e;
+      color: #4ade80;
+    }
+  </style>
+</head>
+<body onload="initDSAModule()">
+
+  <header>
+    <h1>DSA Interview & Challenge Module</h1>
+    <p>Master Data Structures & Algorithms with real-time test case execution</p>
+  </header>
+
+  <main class="quiz-container">
+
+    <!-- DSA Setup Card -->
+    <div class="card" id="dsaSetupCard">
+      <h2>Configure Your DSA Challenge</h2>
+      <p>Select problem count, category, and difficulty level to start practicing.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+        <div>
+          <label><b>Category:</b></label>
+          <select id="dsaCategorySelect">
+            <option value="All">All Categories</option>
+            <option value="Arrays">Arrays</option>
+            <option value="Strings">Strings</option>
+            <option value="Linked Lists">Linked Lists</option>
+            <option value="Stack">Stack</option>
+            <option value="Queue">Queue</option>
+            <option value="Hashing">Hashing</option>
+            <option value="Recursion">Recursion</option>
+            <option value="Searching">Searching</option>
+            <option value="Sorting">Sorting</option>
+            <option value="Binary Search">Binary Search</option>
+            <option value="Trees">Trees</option>
+            <option value="BST">BST</option>
+            <option value="Graphs">Graphs</option>
+            <option value="Heaps">Heaps</option>
+            <option value="Greedy algorithms">Greedy Algorithms</option>
+            <option value="Dynamic Programming">Dynamic Programming</option>
+            <option value="Two pointers">Two Pointers</option>
+            <option value="Sliding window">Sliding Window</option>
+          </select>
+        </div>
+
+        <div>
+          <label><b>Difficulty:</b></label>
+          <select id="dsaDifficultySelect">
+            <option value="All">All Difficulties</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+
+        <div>
+          <label><b>Number of Problems:</b></label>
+          <select id="dsaProblemCountSelect">
+            <option value="5">5 Problems</option>
+            <option value="10">10 Problems</option>
+            <option value="15">15 Problems</option>
+            <option value="20">20 Problems</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="button-row" style="margin-top: 20px;">
+        <button onclick="startDSATest()">Start DSA Challenge</button>
+      </div>
+    </div>
+
+    <!-- Active DSA Problem Workspace -->
+    <div id="dsaActiveArea" style="display:none;">
+
+      <!-- Problem Navigation Pills -->
+      <div class="card" style="padding: 15px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <span style="font-weight:bold; font-size:1.1rem;" id="dsaProgressText">Problem 1 of 5</span>
+          </div>
+          <div class="problem-nav-pills" id="dsaNavPills"></div>
+        </div>
+      </div>
+
+      <!-- Split Workspace -->
+      <div class="dsa-workspace">
+        
+        <!-- Left: Problem Description -->
+        <div class="dsa-problem-pane">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;">
+            <h2 id="dsaProblemTitle" style="margin:0; font-size:1.4rem; color:#60a5fa;">Problem Title</h2>
+            <span id="dsaDifficultyBadge" class="tag-badge tag-easy">Easy</span>
+          </div>
+
+          <p style="margin-bottom: 10px;"><strong>Category:</strong> <span id="dsaCategoryText">Arrays</span></p>
+
+          <hr style="border-color: rgba(255,255,255,0.1); margin: 12px 0;">
+
+          <h3>Problem Statement</h3>
+          <p id="dsaProblemStatement" style="line-height:1.7;">Problem description will appear here...</p>
+
+          <h4 style="margin-top:15px;">Input Format</h4>
+          <p id="dsaInputFormat" style="color:#cbd5e1;">-</p>
+
+          <h4>Output Format</h4>
+          <p id="dsaOutputFormat" style="color:#cbd5e1;">-</p>
+
+          <h4>Constraints</h4>
+          <div class="test-case-box" id="dsaConstraints">-</div>
+
+          <h4 style="margin-top:15px;">Example</h4>
+          <div class="test-case-box">
+            <p><strong>Input:</strong></p>
+            <pre id="dsaExampleInput" style="color:#38bdf8;">-</pre>
+            <p style="margin-top:8px;"><strong>Output:</strong></p>
+            <pre id="dsaExampleOutput" style="color:#4ade80;">-</pre>
+            <p style="margin-top:8px;"><strong>Explanation:</strong></p>
+            <span id="dsaExampleExplanation">-</span>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Code Editor -->
+        <div class="dsa-editor-pane">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <label style="margin:0; padding:0; background:none; border:none; font-weight:bold; color:#60a5fa;"><b>Your Answer / Solution:</b></label>
+            </div>
+            <div>
+              <label style="margin:0; padding:0; background:none; border:none;"><b>Language:</b></label>
+              <select id="dsaLanguageSelect" onchange="changeDSALanguage()" style="width:auto; padding:6px 12px; font-size:0.9rem;">
+                <option value="python">Python 3</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+                <option value="c">C</option>
+              </select>
+              <button onclick="resetDSACode()" style="padding:6px 14px; font-size:0.85rem; background:rgba(255,255,255,0.15); margin-left:6px;">Reset Code</button>
+            </div>
+          </div>
+
+          <textarea id="dsaCodeEditor" class="code-editor-textarea" spellcheck="false" oninput="saveCurrentDSACode()"></textarea>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button onclick="runDSATestCases()" style="flex:1; min-width:140px; background:#16a34a;">Run Code / Test Cases</button>
+            <button onclick="submitDSAProblem()" style="flex:1; min-width:140px; background:#2563eb;">Submit Solution</button>
+            <button id="dsaShowAnswerBtn" onclick="toggleDSAReferenceAnswer()" style="flex:1; min-width:130px; background:#7c3aed;">Show Answer</button>
+          </div>
+
+          <!-- Reference Solution & Explanation Container (Hidden by default) -->
+          <div id="dsaReferenceAnswerBox" class="test-case-box" style="display:none; background:#0f172a; border:1px solid #7c3aed; margin-top:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <h4 style="color:#c084fc; margin:0;">💡 Reference Solution (<span id="dsaReferenceLangTag">Python</span>)</h4>
+              <button onclick="toggleDSAReferenceAnswer()" style="padding:4px 10px; font-size:0.75rem; background:rgba(255,255,255,0.15); color:white;">Hide Answer</button>
+            </div>
+            <pre id="dsaReferenceCode" style="color:#e2e8f0; font-family:monospace; background:#020617; padding:12px; border-radius:8px; overflow-x:auto; white-space:pre-wrap; max-height:220px;"></pre>
+            <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1);">
+              <strong style="color:#facc15;">Explanation of Approach:</strong>
+              <p id="dsaReferenceExplanation" style="color:#cbd5e1; font-size:0.9rem; margin-top:4px; line-height:1.6;"></p>
+            </div>
+          </div>
+
+          <!-- Test Case Execution Result -->
+          <div id="dsaExecutionResult" class="test-case-box" style="min-height:120px; display:none;">
+            <h4>Test Execution Output</h4>
+            <div id="dsaTestCasesOutput"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Navigation Buttons -->
+      <div class="quiz-actions" style="margin-top:20px;">
+        <button onclick="prevDSAProblem()">Previous Problem</button>
+        <button onclick="nextDSAProblem()">Next Problem</button>
+        <button onclick="finishDSASession()" style="background:#7c3aed;">Finish DSA Round</button>
+      </div>
+    </div>
+
+    <!-- DSA Summary Result -->
+    <div id="dsaResultCard" class="card" style="display:none;">
+      <h2>🏆 DSA Challenge Report</h2>
+      <p id="dsaScoreText">Score: 0 / 0</p>
+      <p id="dsaAccuracyText">Accuracy: 0%</p>
+      
+      <div id="dsaDetailedSummary" style="margin-top:15px;"></div>
+
+      <div class="quiz-actions" style="margin-top:20px;">
+        <button onclick="location.reload()">Start New Challenge</button>
+        <a href="result.html"><button>View Final Placement Result</button></a>
+        <a href="index.html"><button>Back to Home</button></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Load Data Banks & Scripts -->
+  <script src="data/dsa-bank.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

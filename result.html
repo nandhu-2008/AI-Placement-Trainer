@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Placement Dashboard - AI Placement Trainer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body onload="loadFinalResult()">
+
+  <header>
+    <h1>Placement Readiness Dashboard</h1>
+    <p>Comprehensive Performance Analytics across Aptitude, Technical, DSA, GD, and AI Interview</p>
+  </header>
+
+  <main class="quiz-container">
+
+    <!-- Overall Readiness Overview -->
+    <div class="card">
+      <h2>Overall Placement Readiness</h2>
+      
+      <div style="margin-top:15px;">
+        <h3>Overall Readiness Score</h3>
+        <div class="progress" style="height:32px; background:rgba(255,255,255,0.1); border-radius:20px;">
+          <div id="overallProgress" class="progress-bar" style="width:0%; line-height:32px; font-size:1.1rem;">0%</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
+        <h3>Placement Status:</h3>
+        <span id="placementStatus" style="font-size:1.4rem; font-weight:bold;">Not Evaluated</span>
+      </div>
+
+      <p id="finalReadiness" style="margin-top:15px; background:rgba(37,99,235,0.1); padding:15px; border-radius:12px; border-left:5px solid #2563eb; color:white;">
+        Complete all practice rounds to generate your placement readiness evaluation.
+      </p>
+    </div>
+
+    <!-- Sectional Scores Summary -->
+    <div class="card">
+      <h2>Sectional Performance Summary</h2>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:15px; margin-top:15px;">
+        <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; border-left:4px solid #38bdf8;">
+          <h3>⚡ Aptitude Round</h3>
+          <p id="aptitudeResult">No aptitude attempt yet.</p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; border-left:4px solid #818cf8;">
+          <h3>💻 Technical Round</h3>
+          <p id="technicalResult">No technical attempt yet.</p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; border-left:4px solid #4ade80;">
+          <h3>🧩 DSA Challenge</h3>
+          <p id="dsaFinalResult">No DSA attempt yet.</p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; border-left:4px solid #facc15;">
+          <h3>🗣️ Group Discussion</h3>
+          <p id="gdFinalResult">No GD attempt yet.</p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; border-left:4px solid #c084fc;">
+          <h3>🤖 AI Interview</h3>
+          <p id="interviewFinalResult">No interview attempt yet.</p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; border-left:4px solid #f472b6;">
+          <h3>📹 Camera & Eye Contact</h3>
+          <p id="cameraFinalResult">No camera analysis yet.</p>
+        </div>
+      </div>
+
+      <p id="voiceFinalResult" style="margin-top:15px; font-size:0.95rem; color:#cbd5e1;"></p>
+    </div>
+
+    <!-- Strengths, Improvements & AI Coaching -->
+    <div class="card">
+      <h2>Placement Evaluation Report</h2>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:15px;">
+        <div>
+          <h3 style="color:#4ade80;">✅ Strengths</h3>
+          <ul id="strengthList" style="margin-left:20px; line-height:1.8; color:white;">
+            <li>Complete rounds to populate strengths.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 style="color:#f87171;">📈 Areas to Improve</h3>
+          <ul id="improvementList" style="margin-left:20px; line-height:1.8; color:white;">
+            <li>Complete rounds to populate improvement areas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top:20px; color:#38bdf8;">💡 Personalized AI Placement Coach Suggestions</h3>
+      <p id="aiSuggestion" style="background:rgba(255,255,255,0.06); padding:15px; border-radius:12px; line-height:1.7; color:white;">
+        Your personalized AI suggestions will appear here.
+      </p>
+    </div>
+
+    <!-- Attempt History Timeline -->
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h2>📜 Performance Attempt History</h2>
+        <button onclick="clearAttemptHistory()" style="background:#dc2626; padding:6px 12px; font-size:0.85rem;">Clear History</button>
+      </div>
+
+      <div id="attemptHistoryLog" style="margin-top:15px; max-height:300px; overflow-y:auto;">
+        <p style="color:#cbd5e1;">No past attempt logs recorded yet.</p>
+      </div>
+    </div>
+
+    <div class="quiz-actions">
+      <a href="index.html"><button>Back to Home</button></a>
+      <a href="aptitude.html"><button>Go to Aptitude</button></a>
+      <a href="technical.html"><button>Go to Technical</button></a>
+      <a href="dsa.html"><button>Go to DSA</button></a>
+      <a href="gd.html"><button>Go to GD</button></a>
+      <a href="interview.html"><button>Go to Interview</button></a>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
